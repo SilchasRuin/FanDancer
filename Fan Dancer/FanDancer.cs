@@ -165,43 +165,17 @@ public abstract class FanDancer
                     feat => feat.FeatName == ModData.FeatNames.PerformIni ||
                             feat.FeatName == ModData.FeatNames.PerceptionIni));
             })
-            .WithOnCreature((self) =>
+            .WithOnCreature(self =>
             {
                 self.AddQEffect(Rogue.SurpriseAttackQEffect());
-                self.AddQEffect(new QEffect("Solo Dancer",
-                        "Can roll Performance as Initiative and creatures that act after you on the first round are off-guard to you.")
-                    {
-                        BonusToInitiative = (_) =>
+                if (self.HasFeat(ModData.FeatNames.PerformIni))
+                {
+                    self.AddQEffect(new QEffect("Solo Dancer",
+                            "Can roll Performance as Initiative and creatures that act after you on the first round are off-guard to you.")
                         {
-                            if (self.HasFeat(ModData.FeatNames.PerformIni))
-                            {
-                                if (ModManager.TryParse("Virtuosic Performer", out FeatName virtuoso))
-                                {
-                                    if (self.HasFeat(virtuoso) && self.HasFeat(FeatName.IncredibleInitiative))
-                                    {
-                                        int performancePerception = self.Skills.Get(Skill.Performance) - self.Perception - (self.Proficiencies.Get(Trait.Performance) >= Proficiency.Master ? 2 : 1);
-                                        if (performancePerception != 0)
-                                            return new Bonus(performancePerception, BonusType.Untyped, "Solo Dancer"); 
-                                    }
-                                    else
-                                    {
-                                        int performanceMinusPerception = self.Skills.Get(Skill.Performance) - self.Perception;
-                                        if (performanceMinusPerception != 0)
-                                            return new Bonus(performanceMinusPerception, BonusType.Untyped, "Solo Dancer");
-                                    }
-                                }
-                                else
-                                {
-                                    int performanceMinusPerception = self.Skills.Get(Skill.Performance) - self.Perception;
-                                    if (performanceMinusPerception != 0)
-                                        return new Bonus(performanceMinusPerception, BonusType.Untyped, "Solo Dancer");
-                                }
-                            }
-                            return null;
-                        }
-                    }
-
-                );
+                            OfferAlternateSkillForInitiative = _ => Skill.Performance
+                        });
+                }
             });
     }
     private static void CreateTwirlThroughLogic(TrueFeat twirlThrough)
@@ -215,7 +189,6 @@ public abstract class FanDancer
                         if (action.ActionId == ActionId.TumbleThrough)
                         {
                             action.WithActiveRollSpecification(new ActiveRollSpecification(TaggedChecks.SkillCheck(Skill.Performance), TaggedChecks.DefenseDC(Defense.Reflex)));
-                            action.ActiveRollSpecification!.TaggedDetermineBonus.InvolvedSkill = Skill.Performance;
                         }
                         return Task.CompletedTask;
                     }
@@ -331,13 +304,10 @@ public abstract class FanDancer
                             return null;
                         return new ActionPossibility(new CombatAction(self,
                                 new SideBySideIllustration(ModData.Illustrations.FanItem,
-                                    IllustrationName.BootsOfTumbling), "Twirling Strike", [Trait.Move],
+                                    IllustrationName.BootsOfTumbling), "Twirling Strike", [Trait.Archetype],
                                 "You stride and may attempt to tumble through an enemy's space. If you successfully tumble through an enemy's space, you can make a melee Strike against that enemy with a fan you're wielding at any point during the movement. On a critical success, the enemy is off-guard against this attack.",
                                 Target.Self()
-                                .WithAdditionalRestriction(cr =>
-                                {
-                                    return cr.Battle.AllCreatures.Where(enemy => enemy.EnemyOf(self)).Any(cr2 => self.DistanceTo(cr2) <= self.Speed - 2) ? null : "An enemy must be in range to tumble through.";
-                                })
+                                .WithAdditionalRestriction(cr => cr.Battle.AllCreatures.Where(enemy => enemy.EnemyOf(self)).Any(cr2 => self.DistanceTo(cr2) <= self.Speed - 2) ? null : "An enemy must be in range to tumble through.")
                             )
                             .WithActionId(ModData.ActionIds.TwirlStrike)
                             .WithActionCost(2)
