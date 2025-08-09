@@ -87,3 +87,4 @@ C:\Users\jcbco\source\repos\Fan Dancer\Fan Dancer\obj\Debug\net9.0-windows\Fan D
 C:\Users\jcbco\source\repos\Fan Dancer\Fan Dancer\obj\Debug\net9.0-windows\refint\Fan Dancer.dll
 C:\Users\jcbco\source\repos\Fan Dancer\Fan Dancer\obj\Debug\net9.0-windows\Fan Dancer.pdb
 C:\Users\jcbco\source\repos\Fan Dancer\Fan Dancer\obj\Debug\net9.0-windows\ref\Fan Dancer.dll
+C:\Users\jcbco\source\repos\Fan Dancer\Fan Dancer\obj\Debug\net9.0-windows\Fan Dancer.sourcelink.json

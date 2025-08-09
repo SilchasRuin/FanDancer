@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03fdc29bb8310f379c3f4d9734bc2d16c20d2623")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

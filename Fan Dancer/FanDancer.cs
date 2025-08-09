@@ -1,26 +1,16 @@
-﻿using Dawnsbury;
-using Dawnsbury.Auxiliary;
-using Dawnsbury.Core;
+﻿using Dawnsbury.Core;
 using Dawnsbury.Core.Animations;
-using Dawnsbury.Core.Animations.Movement;
 using Dawnsbury.Core.CharacterBuilder.Feats;
 using Dawnsbury.Core.CharacterBuilder.FeatsDb.Common;
 using Dawnsbury.Core.CharacterBuilder.FeatsDb.TrueFeatDb;
 using Dawnsbury.Core.CharacterBuilder.FeatsDb.TrueFeatDb.Archetypes;
-using Dawnsbury.Core.CharacterBuilder.FeatsDb.TrueFeatDb.Archetypes.Agnostic;
 using Dawnsbury.Core.CharacterBuilder.Selections.Options;
 using Dawnsbury.Core.CombatActions;
-using Dawnsbury.Core.Coroutines.Options;
-using Dawnsbury.Core.Coroutines.Requests;
 using Dawnsbury.Core.Creatures;
-using Dawnsbury.Core.Creatures.Parts;
-using Dawnsbury.Core.Intelligence;
 using Dawnsbury.Core.Mechanics;
 using Dawnsbury.Core.Mechanics.Core;
 using Dawnsbury.Core.Mechanics.Enumerations;
 using Dawnsbury.Core.Mechanics.Targeting;
-using Dawnsbury.Core.Mechanics.Targeting.TargetingRequirements;
-using Dawnsbury.Core.Mechanics.Treasure;
 using Dawnsbury.Core.Possibilities;
 using Dawnsbury.Core.Tiles;
 using Dawnsbury.Display.Illustrations;
@@ -30,7 +20,7 @@ using Microsoft.Xna.Framework;
 
 namespace Fan_Dancer;
 
-public class FanDancer
+public abstract class FanDancer
 {
     public static IEnumerable<Feat> FanDancerFeats()
     {
@@ -85,7 +75,7 @@ public class FanDancer
         TrueFeat pushingWind = new TrueFeat(ModManager.RegisterFeatName("PushingWind", "Pushing Wind"),
             8,
             "As you spin and glide your fans alongside your allies, you kick up a mild wind that gently carries you all forward.",
-            "So long as you’re holding a fan, you and allies who start their turn in a 30- foot aura emanating around you gain a +5-foot circumstance bonus to land Speed for 1 round." +
+            "So long as you’re holding a fan, you and allies who start their turn in a 30- foot aura emanating around you gain a +5-foot circumstance bonus to Speed for 1 round." +
             "\n\nAdditionally, the air impedes the movements of your foes. While holding a fan, the area in a 10-foot aura emanating around you is difficult terrain for all enemies.",
             [ModData.Traits.FanDancer, Trait.Air, Trait.Aura])
             .WithAvailableAsArchetypeFeat(ModData.Traits.FanDancerArchetype);
@@ -116,7 +106,7 @@ public class FanDancer
                     Creature self = qf.Owner;
                     if (self.HeldItems.Any(item => item.HasTrait(ModData.Traits.Fan)))
                     {
-                        qf.YouBeginAction = async (qfOther, action) =>
+                        qf.YouBeginAction = async (_, action) =>
                         {
                             if (action.ActionId is ActionId.Feint)
                             {
@@ -132,14 +122,14 @@ public class FanDancer
 
                                         }
                                     );
-                                    await self.StrideAsync("Stride 10 feet");
+                                    if (await self.StrideAsync("Stride 10 feet", allowCancel: true))
+                                        self.AddQEffect(new QEffect { Id = ModData.QEffects.FanMove });
                                     if (self.FindQEffect(ModData.QEffects.FanSpeed) != null)
                                         self.FindQEffect(ModData.QEffects.FanSpeed)!.ExpiresAt = ExpirationCondition.Immediately;
-                                    self.AddQEffect(new QEffect { Id = ModData.QEffects.FanMove });
                                 }
                             }
                         };
-                        qf.AfterYouTakeAction = async (qfInner, action) =>
+                        qf.AfterYouTakeAction = async (_, action) =>
                         {
                             if (action.ActionId is ActionId.Feint && !self.HasEffect(ModData.QEffects.FanMove))
                             {
@@ -152,15 +142,15 @@ public class FanDancer
                                         BonusToAllSpeeds = (Func<QEffect, Bonus>)(_ => new Bonus(2 - speed, BonusType.Untyped, "10 feet"))
                                     }
                                         );
-                                    await self.StrideAsync("Stride 10 feet");
+                                    await self.StrideAsync("Stride 10 feet", allowCancel: true);
                                     if (self.FindQEffect(ModData.QEffects.FanSpeed) != null)
                                         self.FindQEffect(ModData.QEffects.FanSpeed)!.ExpiresAt = ExpirationCondition.Immediately;
                                 }
                             }
-                            if (self.HasEffect(ModData.QEffects.FanMove))
-                            {
+                            if (self.HasEffect(ModData.QEffects.FanMove) && action.ActionId is ActionId.Feint)
+                            { 
                                 QEffect? fanMove = self.FindQEffect(ModData.QEffects.FanMove);
-                                fanMove!.ExpiresAt = ExpirationCondition.EphemeralAtEndOfImmediateAction;
+                                    fanMove!.ExpiresAt = ExpirationCondition.EphemeralAtEndOfImmediateAction;
                             }
                         };
                     }
@@ -220,11 +210,12 @@ public class FanDancer
         {
             cr.AddQEffect(new QEffect()
                 {
-                    YouBeginAction = (effect, action) =>
+                    YouBeginAction = (_, action) =>
                     {
                         if (action.ActionId == ActionId.TumbleThrough)
                         {
                             action.WithActiveRollSpecification(new ActiveRollSpecification(TaggedChecks.SkillCheck(Skill.Performance), TaggedChecks.DefenseDC(Defense.Reflex)));
+                            action.ActiveRollSpecification!.TaggedDetermineBonus.InvolvedSkill = Skill.Performance;
                         }
                         return Task.CompletedTask;
                     }
@@ -267,7 +258,7 @@ public class FanDancer
                             {
                                 ExpiresAt = ExpirationCondition.EphemeralAtEndOfImmediateAction,
                                 BonusToDefenses =
-                                    ((Func<QEffect, CombatAction, Defense, Bonus>)((effect, action, defense) =>
+                                    ((Func<QEffect, CombatAction, Defense, Bonus>)((_, _, defense) =>
                                         (defense != Defense.AC ? null : new Bonus(2, BonusType.Circumstance, "Sweeping Fan Block"))!))!
                             });
                         }
@@ -280,57 +271,51 @@ public class FanDancer
     {
         pushingWind.WithOnCreature(self =>
         {
-            if (self.HeldItems.Any(item => item.HasTrait(ModData.Traits.Fan)))
+            if (!self.HeldItems.Any(item => item.HasTrait(ModData.Traits.Fan))) return;
+            self.AnimationData.AddAuraAnimation(IllustrationName.KineticistAuraCircle, 6, Color.Blue);
+            self.AnimationData.AddAuraAnimation(IllustrationName.KineticistAuraCircle, 2, Color.SkyBlue);
+            QEffect terrain = new()
             {
-                self.AnimationData.AddAuraAnimation(IllustrationName.KineticistAuraCircle, 6, Color.Blue);
-                self.AnimationData.AddAuraAnimation(IllustrationName.KineticistAuraCircle, 2, Color.SkyBlue);
-                self.AddQEffect(new QEffect()
+                StartOfYourEveryTurn = (qf, innerSelf) =>
                 {
-                    StartOfYourEveryTurn = (qf, innerSelf) =>
+                    qf.AddGrantingOfTechnical(cr => cr.FriendOf(innerSelf) && cr.DistanceTo(innerSelf) <= 6,
+                        qfTech =>
+                        {
+                            qfTech.BonusToAllSpeeds = _ =>
+                                new Bonus(1, BonusType.Circumstance, "Pushing Wind");
+                            qfTech.ExpiresAt = ExpirationCondition.ExpiresAtStartOfSourcesTurn;
+                        }
+                    );
+                    return Task.CompletedTask;
+                }
+            };
+            terrain.AddGrantingOfTechnical(creature => creature.EnemyOf(self),
+                qffTech =>
+                {
+                    qffTech.StartOfYourEveryTurn = (_, _) =>
                     {
-                        qf.AddGrantingOfTechnical(cr => cr.FriendOf(innerSelf) && cr.DistanceTo(innerSelf) <= 6,
-                            qfTech =>
+                        foreach (Tile tile in self.Battle.Map.AllTiles.Where(tile => tile.DistanceTo(self.Occupies) <= 2))
+                        {
+                            tile.AddQEffect(new TileQEffect() 
                             {
-                                qfTech.BonusToAllSpeeds = qfThis =>
-                                    new Bonus(1, BonusType.Circumstance, "Pushing Wind");
-                                qfTech.ExpiresAt = ExpirationCondition.ExpiresAtStartOfSourcesTurn;
-                            }
-                        );
-                        return Task.CompletedTask;
-                    },
-                    StateCheck = qff =>
-                    {
-                        qff.AddGrantingOfTechnical(creature => creature.EnemyOf(self),
-                            qffTech =>
-                            {
-                                qffTech.StartOfYourEveryTurn = (_, _) =>
-                                {
-                                    foreach (Tile tile in self.Battle.Map.AllTiles)
-                                    {
-                                            if (tile.DistanceTo(self.Occupies) <= 2)
-                                            { 
-                                                tile.AddQEffect(new TileQEffect() 
-                                                {
-                                                    TransformsTileIntoDifficultTerrain = true,
-                                                    TileQEffectId = ModData.TileQEffects.GustTile
-                                                });
-                                            }
-                                    }
-                                    return Task.CompletedTask;
-                                };
-                                qffTech.EndOfYourTurnBeneficialEffect = (_, _) =>
-                                {
-                                    foreach (Tile tile in self.Battle.Map.AllTiles)
-                                    {
-                                        if (tile.HasEffect(ModData.TileQEffects.GustTile))
-                                            tile.RemoveAllQEffects(tqf => tqf.TileQEffectId == ModData.TileQEffects.GustTile);
-                                    }
-                                    return Task.CompletedTask;
-                                };
+                                TransformsTileIntoDifficultTerrain = true,
+                                TileQEffectId = ModData.TileQEffects.GustTile
                             });
-                    }
+                        }
+
+                        return Task.CompletedTask;
+                    };
+                    qffTech.EndOfYourTurnBeneficialEffect = (_, _) =>
+                    {
+                        foreach (Tile tile in self.Battle.Map.AllTiles.Where(tile => tile.HasEffect(ModData.TileQEffects.GustTile)))
+                        {
+                            tile.RemoveAllQEffects(tqf => tqf.TileQEffectId == ModData.TileQEffects.GustTile);
+                        }
+
+                        return Task.CompletedTask;
+                    };
                 });
-            }
+            self.AddQEffect(terrain);
         });
     }
     private static void CreateTwirlingStrikeLogic(TrueFeat twirlingStrike)
@@ -384,7 +369,7 @@ public class FanDancer
                                                 {
                                                     case CheckResult.Success:
                                                     case CheckResult.CriticalSuccess:
-                                                        QEffect? flatFoot = QEffect.FlatFooted("Twirling Strike");
+                                                        QEffect flatFoot = QEffect.FlatFooted("Twirling Strike");
                                                         if (combatAction.CheckResult == CheckResult.CriticalSuccess)
                                                             combatAction.ChosenTargets.ChosenCreature!.AddQEffect(flatFoot);
                                                         if (!await CommonCombatActions.StrikeAnyCreature(self,

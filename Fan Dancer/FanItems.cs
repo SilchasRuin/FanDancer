@@ -1,11 +1,10 @@
 ﻿using Dawnsbury.Core.Mechanics.Enumerations;
 using Dawnsbury.Core.Mechanics.Treasure;
-using Dawnsbury.Display.Illustrations;
 using Dawnsbury.Modding;
 
 namespace Fan_Dancer;
 
-public class FanItems
+public abstract class FanItems
 {
     public static void AddFans()
     {

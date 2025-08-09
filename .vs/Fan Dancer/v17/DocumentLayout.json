@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|c:\\users\\jcbco\\source\\repos\\fan dancer\\fan dancer\\fandancer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|solutionrelative:fan dancer\\fandancer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|c:\\users\\jcbco\\source\\repos\\fan dancer\\fan dancer\\fan dancer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|solutionrelative:fan dancer\\fan dancer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|c:\\users\\jcbco\\source\\repos\\fan dancer\\fan dancer\\modloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|solutionrelative:fan dancer\\modloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|c:\\users\\jcbco\\source\\repos\\fan dancer\\fan dancer\\moddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|solutionrelative:fan dancer\\moddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|c:\\users\\jcbco\\source\\repos\\fan dancer\\fan dancer\\fan dancer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7B82AA49-6D3B-418B-A2E6-ABA1CDD2FBB7}|Fan Dancer\\Fan Dancer.csproj|solutionrelative:fan dancer\\fan dancer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,20 +34,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "FanDancer.cs",
+              "DocumentMoniker": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\FanDancer.cs",
+              "RelativeDocumentMoniker": "Fan Dancer\\FanDancer.cs",
+              "ToolTip": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\FanDancer.cs",
+              "RelativeToolTip": "Fan Dancer\\FanDancer.cs",
+              "ViewState": "AgIAAGIBAAAAAAAAAAAuwOkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-30T08:06:48.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ModData.cs",
               "DocumentMoniker": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\ModData.cs",
               "RelativeDocumentMoniker": "Fan Dancer\\ModData.cs",
               "ToolTip": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\ModData.cs",
               "RelativeToolTip": "Fan Dancer\\ModData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T08:06:02.087Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T08:06:02.087Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Fan Dancer.csproj",
               "DocumentMoniker": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\Fan Dancer.csproj",
               "RelativeDocumentMoniker": "Fan Dancer\\Fan Dancer.csproj",
@@ -51,21 +67,19 @@
               "RelativeToolTip": "Fan Dancer\\Fan Dancer.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-19T08:04:26.349Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T08:04:26.349Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "ModLoader.cs",
               "DocumentMoniker": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\ModLoader.cs",
               "RelativeDocumentMoniker": "Fan Dancer\\ModLoader.cs",
               "ToolTip": "C:\\Users\\jcbco\\source\\repos\\Fan Dancer\\Fan Dancer\\ModLoader.cs",
               "RelativeToolTip": "Fan Dancer\\ModLoader.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAgwDkAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAgwBcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T08:02:50.227Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T08:02:50.227Z"
             }
           ]
         }

@@ -8,7 +8,7 @@ using Dawnsbury.Display.Illustrations;
 
 namespace Fan_Dancer
 {
-    public class ModData
+    public abstract class ModData
     {
         public static class Traits
         {
@@ -36,7 +36,7 @@ namespace Fan_Dancer
 
         internal static class Illustrations
         {
-            internal static Illustration FanItem = new ModdedIllustration("FDAssets/Fan.png");
+            internal static readonly Illustration FanItem = new ModdedIllustration("FDAssets/Fan.png");
         }
 
         internal static class ActionIds

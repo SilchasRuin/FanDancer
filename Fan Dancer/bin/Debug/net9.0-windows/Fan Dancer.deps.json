@@ -9,7 +9,7 @@
       "Fan Dancer/1.0.0": {
         "dependencies": {
           "Common": "1.0.0.0",
-          "Dawnsbury Days": "3.47.0.0",
+          "Dawnsbury Days": "3.50.0.0",
           "MonoGame.Framework": "3.8.1.303"
         },
         "runtime": {
@@ -24,11 +24,11 @@
           }
         }
       },
-      "Dawnsbury Days/3.47.0.0": {
+      "Dawnsbury Days/3.50.0.0": {
         "runtime": {
           "Dawnsbury Days.dll": {
-            "assemblyVersion": "3.47.0.0",
-            "fileVersion": "3.47.0.0"
+            "assemblyVersion": "3.50.0.0",
+            "fileVersion": "3.50.0.0"
           }
         }
       },
@@ -424,7 +424,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Dawnsbury Days/3.47.0.0": {
+    "Dawnsbury Days/3.50.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

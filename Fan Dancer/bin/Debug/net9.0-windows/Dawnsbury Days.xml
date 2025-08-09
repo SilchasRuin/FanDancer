@@ -163,9 +163,24 @@
             Returns a randomly selected element of the list. If the list is empty, it returns null.
             </summary>
         </member>
+        <member name="M:Dawnsbury.Auxiliary.ExtensionMethods.GetRandomForRules``1(System.Collections.Generic.IReadOnlyList{``0})">
+            <summary>
+            Returns a randomly selected element of the list from the seed for rules decisions. If the list is empty, it returns null.
+            </summary>
+        </member>
+        <member name="M:Dawnsbury.Auxiliary.ExtensionMethods.GetRandomForAi``1(System.Collections.Generic.IReadOnlyList{``0})">
+            <summary>
+            Returns a randomly selected element of the list from the seed for AI decisions. If the list is empty, it returns null.
+            </summary>
+        </member>
+        <member name="M:Dawnsbury.Auxiliary.ExtensionMethods.GetRandomVisualOnly``1(System.Collections.Generic.IReadOnlyList{``0})">
+            <summary>
+            Returns a randomly selected element of the list from the seed for visual-only decisions. If the list is empty, it returns null.
+            </summary>
+        </member>
         <member name="M:Dawnsbury.Auxiliary.ExtensionMethods.GetRandomWithoutReplacement``1(System.Collections.Generic.IReadOnlyList{``0},System.Int32)">
             <summary>
-            Returns <paramref name="count"/> randomly selected elements from the list. If the list doesn't have enough elements, all elements are returned.
+            Returns <paramref name="count"/> randomly selected elements from the list. If the list doesn't have enough elements, all elements are returned. Uses rules seed.
             </summary>
         </member>
         <member name="M:Dawnsbury.Auxiliary.ExtensionMethods.Exponentiate(System.Int32,System.UInt32)">
@@ -906,6 +921,11 @@
             </summary>
             <param name="actualCompanionIndex">0 means the standard companion of Druid, Champion or Ranger; 1+ means a Beastmaster companion.</param>
         </member>
+        <member name="P:Dawnsbury.Campaign.Path.Savegame.DecisionPoints">
+            <summary>
+            Gets data on mid-game saves.
+            </summary>
+        </member>
         <member name="F:Dawnsbury.Constants.ACTION_COST_VARIABLE_ACTION_COST_ONE_TWO_OR_THREE">
             <summary>
             The user can choose to spend 1 action, 2 actions or 3 actions on this.
@@ -1458,6 +1478,11 @@
             because they would not display on the tooltip.
             </summary>
         </member>
+        <member name="T:Dawnsbury.Core.Coroutines.Options.CancelOption">
+            <summary>
+            This option allows the player to right-click to select this.
+            </summary>
+        </member>
         <member name="P:Dawnsbury.Core.Coroutines.Options.ChoiceButtonOption.Index">
             <summary>
             A zero-based index of the button chosen. The first answer is "0", the second answer is "1" etc.
@@ -1466,6 +1491,16 @@
         <member name="P:Dawnsbury.Core.Coroutines.Options.ChoiceButtonOption.Caption">
             <summary>
             The text of the button that the user selected.
+            </summary>
+        </member>
+        <member name="T:Dawnsbury.Core.Coroutines.Options.PassOption">
+            <summary>
+            The option allows the player to press Space or Enter to end their turn. This means "end my turn", not "I don't wish to act as part of this action." For passing during an action, use <see cref="T:Dawnsbury.Core.Coroutines.Options.PassViaButtonOption"/> or <see cref="T:Dawnsbury.Core.Coroutines.Options.CancelOption"/>.
+            </summary>
+        </member>
+        <member name="T:Dawnsbury.Core.Coroutines.Options.PassViaButtonOption">
+            <summary>
+            This option displays a button in the bottom-left corner of the screen.
             </summary>
         </member>
         <member name="P:Dawnsbury.Core.Coroutines.Requests.SleepRequest.CanBeClickedThrough">
@@ -1661,6 +1696,11 @@
             Gets the creature's skills.
             </summary>
         </member>
+        <member name="P:Dawnsbury.Core.Creatures.Creature.Space">
+            <summary>
+            Gets the space the creature is currently occupying.
+            </summary>
+        </member>
         <member name="P:Dawnsbury.Core.Creatures.Creature.DetectionStatus">
             <summary>
             Gets the creature's Undetected/Detected flag, as well as information about who it's Hidden from.
@@ -1710,6 +1750,11 @@
         <member name="P:Dawnsbury.Core.Creatures.Creature.Defenses">
             <summary>
             Gets the creature's saves, AC and other possible DCs, such as skill DCs and Perception DC.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Creature.SpawnAs">
+            <summary>
+            This creature should spawn under the control of this faction.
             </summary>
         </member>
         <member name="P:Dawnsbury.Core.Creatures.Creature.SpawnAsGaia">
@@ -1994,6 +2039,17 @@
             Returns true if this creature is at least trained in the given skill, or has some ability to take trained actions in this skill even though it isn't trained in this skill.
             </summary>
         </member>
+        <member name="M:Dawnsbury.Core.Creatures.Creature.Overhead(System.String,Microsoft.Xna.Framework.Color,System.String,System.String,System.String,Dawnsbury.Core.Mechanics.Traits)">
+            <summary>
+            Triggers an overhead flyout on top of this creature.
+            </summary>
+            <param name="text">Text of the overhead flyout.</param>
+            <param name="color">Color of the overhead flyout.</param>
+            <param name="log">If not null, then this line will also be printed to the combat log.</param>
+            <param name="detailCaption">If <paramref name="logDetails"/> and this is not null, then this is the caption of the tooltip that appears when you mouse over the combat log line.</param>
+            <param name="logDetails">If <paramref name="log"/> and this is not null, then this is the text of the tooltip that appears when you mouse over the combat log line.</param>
+            <param name="traits">If <paramref name="log"/> and this is not null, then these are the traits displayed in the tooltip when you move over the combat log line.</param>
+        </member>
         <member name="P:Dawnsbury.Core.Creatures.Faction.IsGaia">
             <summary>
             This factions is either <see cref="P:Dawnsbury.Core.Creatures.Faction.IsGaiaFriends"/> or <see cref="P:Dawnsbury.Core.Creatures.Faction.IsGaiaPure"/>.
@@ -2047,6 +2103,61 @@
         <member name="M:Dawnsbury.Core.Creatures.Parts.Proficiencies.SetExactly(Dawnsbury.Core.Mechanics.Enumerations.Trait[],Dawnsbury.Core.Mechanics.Enumerations.Proficiency)">
             <summary>
             Sets the proficiency you have with items that posses ALL OF THE GIVEN TRAITS to exactly PROFICIENCY LEVEL, even if your proficiency level was previously higher.
+            </summary>
+        </member>
+        <member name="T:Dawnsbury.Core.Creatures.Parts.Space">
+            <summary>
+            Represents the squares the creature is currently occupying.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.Self">
+            <summary>
+            Gets the creature that owns this space.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.Size">
+            <summary>
+            Gets the size of this creature.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.TopLeftTile">
+            <summary>
+            Gets the top-left tile of this space, which is the controlling, primary tile that determines the creature's coordinates.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.CenterTile">
+            <summary>
+            Gets the tile that's the closest to the center of the creature (useful for Huge and Gargantuan creatures only).
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.TopTile">
+            <summary>
+            Gets the tile that's closest to the horizontal center of the creature, but is near the top of the creature (useful for overheads of Huge and Gargantuan creatures only).
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.CenterVector">
+            <summary>
+            Gets the rules-based position of the exact center of this creature.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.Long">
+            <summary>
+            This creature, despite being Large or larger, has 5 feet smaller reach than a creature of its size normally would.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.OccupiesSpace">
+            <summary>
+            Does this creature have a real tile?
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.SizeInSquares">
+            <summary>
+            Gets the width of this creature, in squares. A Medium creature is 1 square, a Large creature is 2 squares, a Huge creature is 3 squares and a Gargantuan creature is 4 squares. Only Medium creatures are currently supported.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Creatures.Parts.Space.IsSingleSquare">
+            <summary>
+            Returns true if this creature is Small or Medium.
             </summary>
         </member>
         <member name="P:Dawnsbury.Core.Creatures.Parts.WeaknessAndResistance.ImmunityToCriticalHits">
@@ -2685,6 +2796,11 @@
             This spell or impulses doesn't have any increased effects when heightened.
             </summary>
         </member>
+        <member name="F:Dawnsbury.Core.Mechanics.Enumerations.Trait.DoNotShowInContextMenu">
+            <summary>
+            A combat action with this trait will not appear in context menu options when clicking on a creature.
+            </summary>
+        </member>
         <member name="T:Dawnsbury.Core.Mechanics.Enumerations.TraitProperties">
             <summary>
             Contains additional information about a trait.
@@ -2970,6 +3086,11 @@
         <member name="M:Dawnsbury.Core.Mechanics.QEffect.ImmunityToTargeting(Dawnsbury.Core.CombatActions.ActionId)">
             <summary>
             Creates a QEffect that makes its owner untargetable by actions with the given ACTION ID for the rest of the encounter. 
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Mechanics.QEffect.WhenYouAcquireThis">
+            <summary>
+            This triggeres immediately after a creature acquires this QEffect.
             </summary>
         </member>
         <member name="M:Dawnsbury.Core.Mechanics.QEffect.Stunned">
@@ -3285,7 +3406,7 @@
         </member>
         <member name="P:Dawnsbury.Core.Mechanics.QEffect.AfterYouTakeDamage">
             <summary>
-            This happens after you take AMOUNT of damage (which consists primarily of DAMAGE KIND, but could contain other damage kinds as well) from a COMBAT ACTION and you know WHETHER IT CAME FROM A CRITICAL HIT. If you need to know specifically ALL the damage kinds dealt to you, use <see cref="P:Dawnsbury.Core.Mechanics.QEffect.AfterYouTakeAmountOfDamageOfKind"/> instead.
+            This happens after you take AMOUNT of damage (which consists primarily of DAMAGE KIND, but could contain other damage kinds as well) from a COMBAT ACTION and you know WHETHER IT CAME FROM A CRITICAL HIT OR CRITICAL FAILURE. If you need to know specifically ALL the damage kinds dealt to you, use <see cref="P:Dawnsbury.Core.Mechanics.QEffect.AfterYouTakeAmountOfDamageOfKind"/> instead.
             </summary>
         </member>
         <member name="P:Dawnsbury.Core.Mechanics.QEffect.AfterYouTakeAmountOfDamageOfKind">
@@ -3483,6 +3604,11 @@
         <member name="P:Dawnsbury.Core.Mechanics.QEffect.YouBeginAction">
             <summary>
             Triggers as you begin to take the COMBAT ACTION, just after any attacks-of-opportunity resolve
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Mechanics.QEffect.OfferAlternateSkillForInitiative">
+            <summary>
+            At the beginning of each encounter, if the returned skill is non-null and is greater than your Perception, then use that instead of Perception for your initiative.
             </summary>
         </member>
         <member name="F:Dawnsbury.Core.Mechanics.QEffect.ReducesPersistentDamageRecoveryCheckDc">
@@ -3820,11 +3946,41 @@
             Represents the Wyvern Venom affliction (as per the spell).
             </summary>
         </member>
+        <member name="F:Dawnsbury.Core.Mechanics.QEffectId.HoldingBreath">
+            <summary>
+            The creature is holding its breath as per the rules for Suffocation.
+            </summary>
+        </member>
+        <member name="F:Dawnsbury.Core.Mechanics.QEffectId.ElfStep">
+            <summary>
+            The first 2 tiles moved count as steps instead of only the first one
+            </summary>
+        </member>
+        <member name="F:Dawnsbury.Core.Mechanics.QEffectId.TenFootVisionRadius">
+            <summary>
+            The effect owner treats all creatures 15 feet or more away from them as being hidden
+            </summary>
+        </member>
+        <member name="F:Dawnsbury.Core.Mechanics.QEffectId.PervasiveSuperstition">
+            <summary>
+            The effect owner will not be asked if they want to use their reaction for Orc Superstition, or effects based on that feat.
+            </summary>
+        </member>
+        <member name="F:Dawnsbury.Core.Mechanics.QEffectId.SpeakAboutMissingArmor">
+            <summary>
+            This QEffect causes this character to say that they're lacking armor after a long rest.
+            </summary>
+        </member>
         <member name="M:Dawnsbury.Core.Mechanics.Rules.DeathRules.ShouldDieImmediately(Dawnsbury.Core.Creatures.Creature)">
             <summary>
             Returns true if, upon reaching 0 HP, the creature should immediately die instead of entering a dying state.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Dawnsbury.Core.Mechanics.Rules.FlankingRules.IsOpposite(Dawnsbury.Core.Tiles.Tile,Dawnsbury.Core.Creatures.Creature,Dawnsbury.Core.Creatures.Creature)">
+            <summary>
+            Check if TILE is on the opposite side of FLANKER, with FLANKEE in between
+            </summary>
         </member>
         <member name="M:Dawnsbury.Core.Mechanics.Rules.HiddenRules.IsHiddenFromAllEnemies(Dawnsbury.Core.Creatures.Creature)">
             <summary>
@@ -4162,6 +4318,11 @@
             </summary>
             <param name="additionalRestriction">When CASTER uses this action, this returns a reason for why that action can't be performed, or null if it's okay to perform.</param>
         </member>
+        <member name="M:Dawnsbury.Core.Mechanics.Targeting.Targets.StepByStepStrideTarget.#ctor(System.Int32)">
+            <summary>
+            This constructor create a step-by-step target that can only target non-rough terrtain, with a max tile distance equal to STEP DISTANCE
+            </summary>
+        </member>
         <member name="P:Dawnsbury.Core.Mechanics.Treasure.ArmorProperties.ACBonus">
             <summary>
             Positive number in AC values, such as 4.
@@ -4185,6 +4346,16 @@
         <member name="P:Dawnsbury.Core.Mechanics.Treasure.ArmorProperties.Strength">
             <summary>
             Strength score, such as 14.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Mechanics.Treasure.ArmorProperties.ItemBonus">
+            <summary>
+            Item bonus to AC on top of the standard AC, usually coming from fundamental armor runes.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Core.Mechanics.Treasure.ArmorProperties.ItemBonusToSavingThrows">
+            <summary>
+            Item bonus to saving throws from fundamental armor runes.
             </summary>
         </member>
         <member name="T:Dawnsbury.Core.Mechanics.Treasure.ItemModifications">
@@ -4366,6 +4537,11 @@
             Creates the Incorporeal effect, which is automatically added to all creatures with the Incorporeal trait.
             </summary>
         </member>
+        <member name="M:Dawnsbury.Core.Noncombat.Dialogue.ConversationSkillCheckSpecification.WithTargetCreature(Dawnsbury.Core.Creatures.Creature)">
+            <summary>
+            This skill check is being made against which creature (for the purposes of bonuses and penalties etc.)
+            </summary>
+        </member>
         <member name="M:Dawnsbury.Core.Possibilities.Possibilities.Grapple(Dawnsbury.Core.Creatures.Creature,Dawnsbury.Core.Creatures.Creature,Dawnsbury.Core.Mechanics.Core.CheckResult)">
             <summary>
             Performs the results of a grab or grapple action of GRAPPLER onto TARGET with CHECK RESULT. On a failure, this may cause an existing grapple to end. 
@@ -4376,6 +4552,11 @@
             Assigns this possibility to a "possibility group". If <see cref="P:Dawnsbury.IO.PlayerProfile.CombineRelatedActions"/> is enabled, then if there are two full-height actions of the same <see cref="P:Dawnsbury.Core.Possibilities.Possibility.PossibilityGroup"/> in the bottom action bar next to each other, they will be merged into the same column as half-height actions. If there are three such actions next to each other, they will be combined into a single submenu named as the possibility group. Use the constants available in <see cref="T:Dawnsbury.Constants"/> in preference to pure decompiled strings.
             </summary>
         </member>
+        <member name="M:Dawnsbury.Core.Possibilities.Possibility.WithPossibilitySize(Dawnsbury.Core.Possibilities.PossibilitySize)">
+            <summary>
+            Sets the default size for this possibility.
+            </summary>
+        </member>
         <member name="P:Dawnsbury.Core.Possibilities.PossibilitySection.PossibilitySectionId">
             <summary>
             Some possibility sections have a technical ID so that you can refer to them without using the human-readable name in mods and effects.
@@ -4384,6 +4565,11 @@
         <member name="P:Dawnsbury.Core.Possibilities.SpellVariant.GoodnessModifier">
             <summary>
             If not null, then if an AI considers casting this variant with usefulness USEFULNESS, then this variant is instead considered to have the returned usefulness from this method.
+            </summary>
+        </member>
+        <member name="M:Dawnsbury.Core.Possibilities.SpellVariant.WithGoodness(System.Func{Dawnsbury.Core.Intelligence.AI,System.Single,System.Single})">
+            <summary>
+            If an AI considers casting this variant with usefulness USEFULNESS (the default goodness), then this variant is instead considered to have the returned usefulness from this method (returned goodness).
             </summary>
         </member>
         <member name="P:Dawnsbury.Core.Possibilities.SubmenuPossibility.SubmenuId">
@@ -4410,6 +4596,16 @@
         <member name="P:Dawnsbury.Core.TBattle.AllSpawnedCreatures">
             <summary>
             Gets all creatures that have been spawned in this battle, even if they are already dead or otherwise removed from the battlefield.
+            </summary>
+        </member>
+        <member name="M:Dawnsbury.Core.TBattle.SpawnOvercreatureProjectileParticles(System.Int32,Dawnsbury.Core.Tiles.Tile,Dawnsbury.Core.Tiles.Tile,Microsoft.Xna.Framework.Color,Dawnsbury.Display.Illustrations.Illustration,System.Boolean)">
+            <summary>
+            Spawns particles between two tiles, but consider using an overload instead and target creatures directly if the particles are supposed to come from creatures.
+            </summary>
+        </member>
+        <member name="M:Dawnsbury.Core.TBattle.SpawnOverairProjectileParticlesAsync(System.Int32,Dawnsbury.Core.Tiles.Tile,Dawnsbury.Core.Tiles.Tile,Microsoft.Xna.Framework.Color,Dawnsbury.Display.Illustrations.Illustration,System.Boolean)">
+            <summary>
+            Spawns particles between two tiles and waits until they all arrive, but consider using an overload instead and target creatures directly if the particles are supposed to come from creatures.
             </summary>
         </member>
         <member name="M:Dawnsbury.Core.TBattle.Trigger(Dawnsbury.Campaign.Encounters.TriggerName)">
@@ -4472,6 +4668,11 @@
             The creature will spawn only on the direction of the cutscene, not as the map is loaded.
             </summary>
         </member>
+        <member name="P:Dawnsbury.Core.Tiles.CreatureSpawnOptions.SpawnAsFaction">
+            <summary>
+            The creature spawns under the control of this faction instead of whatever faction it would normally have.
+            </summary>
+        </member>
         <member name="P:Dawnsbury.Core.Tiles.Tile.IsFree">
             <summary>
             Indicates if the tile is empty and doesn't block movement of anyone or anything, and there isn't even any unconscious creature.
@@ -4496,6 +4697,18 @@
             <summary>
             The tile counts as being on fire for the purposes of some effects.
             </summary>
+        </member>
+        <member name="M:Dawnsbury.Core.Tiles.Tile.TileOverhead(System.String,Microsoft.Xna.Framework.Color,System.String,System.String,System.String,Dawnsbury.Core.Mechanics.Traits,System.Boolean)">
+            <summary>
+            Triggers an overhead flyout on top of this tile.
+            </summary>
+            <param name="text">Text of the overhead flyout.</param>
+            <param name="color">Color of the overhead flyout.</param>
+            <param name="log">If not null, then this line will also be printed to the combat log.</param>
+            <param name="detailCaption">If <paramref name="logDetails"/> and this is not null, then this is the caption of the tooltip that appears when you mouse over the combat log line.</param>
+            <param name="logDetails">If <paramref name="log"/> and this is not null, then this is the text of the tooltip that appears when you mouse over the combat log line.</param>
+            <param name="traits">If <paramref name="log"/> and this is not null, then these are the traits displayed in the tooltip when you move over the combat log line.</param>
+            <param name="displacedToTheRight">This overhead should be displayed on top of the tile intersection to the right of this tile, not on top of this tile itself.</param>
         </member>
         <member name="P:Dawnsbury.Core.Tiles.TileQEffect.AfterCreatureEntersHere">
             <summary>
@@ -4993,6 +5206,12 @@
         <member name="P:Dawnsbury.Modding.LoadOrder.WhenFeatsBecomeLoaded">
             <summary>
             Gets the list of actions that should happen after all feats become loaded, intended to be mostly adding feats to creature definitions.
+            </summary>
+        </member>
+        <member name="P:Dawnsbury.Modding.LoadOrder.AtEndOfLoadingSequence">
+            <summary>
+            Gets the list of actions that should happen after all feats, spells and items become loaded, including from mods, after everything else has been loaded, just before
+            we start loading adventure paths and save files. Intended for example to update feat descriptions that include item names.
             </summary>
         </member>
         <member name="M:Dawnsbury.Modding.LoadOrder.LoadingFeatsCompleted">
