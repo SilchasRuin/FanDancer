@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07aae3fb2aa1b1f7e27ecb4ef70226cecc87594c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4688937a2d2ed27ef8e999fe92ce3131386a571e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fan Dancer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

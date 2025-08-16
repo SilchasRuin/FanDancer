@@ -34,13 +34,12 @@ public abstract class FanDancer
         //Archetype feats
         TrueFeat soloDancer = new TrueFeat(ModManager.RegisterFeatName("SoloDancer", "Solo Dancer"),
             4, "You often dance alone with a grace exceeding that of most other performers, carrying yourself with a poise and confidence that draws the attention of those around you.", "You can always roll Performance for initiative, and during the first round of combat, creatures that act after you are off-guard to you.",[ModData.Traits.FanDancer]);
+        soloDancer.WithAvailableAsArchetypeFeat(ModData.Traits.FanDancerArchetype);
         if (PlayerProfile.Instance.IsBooleanOptionEnabled("TwirlThroughAndSoloDancerAsSkillFeats"))
         {
-            soloDancer.Traits.Add(Trait.General);
-            soloDancer.Traits.Add(Trait.Skill);
-            soloDancer.WithPrerequisite(sheet => sheet.NumberOfFeatsForDedication.ContainsKey(ModData.Traits.FanDancerArchetype), "You must have the Fan Dancer dedication to take this feat.");
+            soloDancer.Traits = [Trait.General, Trait.Skill];
+            soloDancer.FeatGroup = FeatGroup.SkillFeats;
         }
-        else soloDancer.WithAvailableAsArchetypeFeat(ModData.Traits.FanDancerArchetype);
         CreateSoloDancerLogic(soloDancer);
         yield return soloDancer;
         //Solo Dancer choice feats
@@ -54,13 +53,12 @@ public abstract class FanDancer
         TrueFeat twirlThrough = new TrueFeat(ModData.FeatNames.TwirlThrough,
             4, "You sweep across the battlefield in a fluttering of movement honed from years of coordinating perfectly spaced movements alongside fellow dancers.", 
             "When you attempt to Tumble Through an enemy's space, you can use Performance instead of Acrobatics.", [ModData.Traits.FanDancer]);
+        twirlThrough.WithAvailableAsArchetypeFeat(ModData.Traits.FanDancerArchetype);
         if (PlayerProfile.Instance.IsBooleanOptionEnabled("TwirlThroughAndSoloDancerAsSkillFeats"))
         {
-            twirlThrough.Traits.Add(Trait.General);
-            twirlThrough.Traits.Add(Trait.Skill);
-            twirlThrough.WithPrerequisite(sheet => sheet.NumberOfFeatsForDedication.ContainsKey(ModData.Traits.FanDancerArchetype), "You must have the Fan Dancer dedication to take this feat.");
+            twirlThrough.Traits = [Trait.General, Trait.Skill];
+            twirlThrough.FeatGroup =  FeatGroup.SkillFeats;
         }
-        else twirlThrough.WithAvailableAsArchetypeFeat(ModData.Traits.FanDancerArchetype);
         CreateTwirlThroughLogic(twirlThrough);
         yield return twirlThrough;
         TrueFeat sweepingFanBlock = new TrueFeat(ModManager.RegisterFeatName("SweepingFanBlock", "Sweeping Fan"),
